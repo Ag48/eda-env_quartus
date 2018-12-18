@@ -4,7 +4,7 @@ WORKDIR /tmp
 
 ARG version_quartus="18.1"
 ARG build_quartus="625"
-ARG bin_quartus="QuartusSetup-${version_quartus}.0.${build_quartus}-linux.run"
+ARG bin_quartus="QuartusLiteSetup-${version_quartus}.0.${build_quartus}-linux.run"
 # ARG lib_max10="max10-${version_quartus}.0.${build_quartus}.qdz"
 # ARG lib_cyclone5="cyclone5-${version_quartus}.0.${build_quartus}.qdz"
 ARG url_download_prefix="http://download.altera.com/akdlm/software/acdsinst/${version_quartus}/${build_quartus}/ib_installers"

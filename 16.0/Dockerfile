@@ -29,8 +29,7 @@ RUN chmod a+x ${bin_quartus}
 RUN ./${bin_quartus} \
   --mode unattended \
   --installdir ${path_install_quartus} \
-  --unattendedmodeui none \
-  --accept_eula 1
+  --unattendedmodeui none
 
 # build image
 FROM stomoki/eda-env_emacs-verilog-mode:latest
