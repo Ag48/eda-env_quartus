@@ -44,6 +44,7 @@ RUN yum update -y \
     libXext-devel.i686 \
     libXft-devel.i686 \
     ncurses-libs.i686 \
+  && yum groupinstall -y "X Window System" \
   && yum clean all
 ENV PATH ${path_install_quartus}/quartus/bin:$PATH
 
