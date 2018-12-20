@@ -10,9 +10,6 @@ ARG lib_max10="max10-${version_quartus}.0.${build_quartus}.qdz"
 ARG url_download_prefix="http://download.altera.com/akdlm/software/acdsinst/${version_quartus}/${build_quartus}/ib_installers"
 ARG url_download_quartus="${url_download_prefix}/${bin_quartus}"
 ARG url_download_max10="${url_download_prefix}/${lib_max10}"
-# ARG url_lib_cyclone5="${url_download_prefix}/${lib_cyclone5}"
-# ARG url_download_quartus="http://download.altera.com/akdlm/software/acdsinst/${version_quartus}/${build_quartus}/ib_installers/${bin_quartus}"
-# ARG url_download_max10_lib="http://download.altera.com/akdlm/software/acdsinst/16.0/211/ib_installers/max10-16.0.0.211.qdz"
 ARG path_install_quartus="/eda/altera_lite/${version_quartus}"
 
 # prepare required packages
@@ -36,8 +33,7 @@ RUN rm -rf ${path_install_quartus}/unistall
 
 # build image
 FROM stomoki/eda-env_emacs-verilog-mode:latest
-COPY --from=building ${path_install_quartus} ${path_install_quartus}
-
+COPY --from=building ${path_install_quartus} /qlite_${version_quartus}
 RUN yum update -y \
   && yum install -y \
     glibc.i686 \
@@ -46,7 +42,7 @@ RUN yum update -y \
     ncurses-libs.i686 \
   && yum groupinstall -y "X Window System" \
   && yum clean all
-ENV PATH ${path_install_quartus}/quartus/bin:$PATH
+ENV PATH /qlite/quartus/bin:$PATH
 RUN echo "export PATH=${PATH}:/eda/intelFPGA/16.0/quartus/bin; echo 'set vsim path to PATH'" >> /etc/bashrc 
 
 # set ssh config & gen ssh-key
