@@ -12,7 +12,7 @@ ARG url_download_quartus="${url_download_prefix}/${bin_quartus}"
 ARG url_download_max10="${url_download_prefix}/${lib_max10}"
 ARG path_install_quartus="/eda/altera_lite/${version_quartus}"
 
-# for modelsim
+# prepare required packages
 RUN yum update -y \
     && yum install -y \
       glib.i686 \
@@ -29,11 +29,11 @@ RUN ./${bin_quartus} \
   --installdir ${path_install_quartus} \
   --unattendedmodeui none \
   --accept_eula 1
-RUN rm -rf ${path_install_quartus}/unistall
+RUN rm -rf ${path_install_quartus}/uninstall
 
 # build image
 FROM stomoki/eda-env_emacs-verilog-mode:latest
-COPY --from=building /eda/altera_lite /qlite_${version_quartus}
+COPY --from=building /eda/altera_lite /altera_lite
 RUN yum update -y \
   && yum install -y \
     glibc.i686 \
@@ -42,7 +42,7 @@ RUN yum update -y \
     ncurses-libs.i686 \
   && yum groupinstall -y "X Window System" \
   && yum clean all
-ENV PATH /altera_lite/quartus/bin:$PATH
+ENV PATH /altera_lite/18.1/quartus/bin:$PATH
 
 # set ssh config & gen ssh-key
 ## gen ssh-key

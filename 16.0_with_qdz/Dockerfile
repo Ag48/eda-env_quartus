@@ -20,8 +20,6 @@ RUN yum update -y \
       libXext-devel.i686 \
       libXft-devel.i686 \
       ncurses-libs.i686
-RUN wget --spider -nv --timeout 10 -t 1 ${url_download_quartus}
-RUN wget --spider -nv --timeout 10 -t 1 ${url_download_max10}
 ADD ${url_download_quartus} /tmp
 ADD ${url_download_max10} /tmp
 RUN chmod a+x ${bin_quartus} 
@@ -29,11 +27,11 @@ RUN ./${bin_quartus} \
   --mode unattended \
   --installdir ${path_install_quartus} \
   --unattendedmodeui none
-RUN rm -rf ${path_install_quartus}/unistall
+RUN rm -rf ${path_install_quartus}/uninstall
 
 # build image
 FROM stomoki/eda-env_emacs-verilog-mode:latest
-COPY --from=building ${path_install_quartus} /qlite_${version_quartus}
+COPY --from=building /eda/altera_lite /altera_lite
 RUN yum update -y \
   && yum install -y \
     glibc.i686 \
@@ -42,7 +40,7 @@ RUN yum update -y \
     ncurses-libs.i686 \
   && yum groupinstall -y "X Window System" \
   && yum clean all
-ENV PATH /qlite/quartus/bin:$PATH
+ENV PATH /altera_lite/16.0/quartus/bin:$PATH
 RUN echo "export PATH=${PATH}:/eda/intelFPGA/16.0/quartus/bin; echo 'set vsim path to PATH'" >> /etc/bashrc 
 
 # set ssh config & gen ssh-key
